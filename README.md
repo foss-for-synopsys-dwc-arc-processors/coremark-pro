@@ -1,6 +1,6 @@
 # About
 
-CoreMark®-PRO-Zephyr is a clone of official CoreMark®-PRO release which can be found at the [EEMBC CoreMark-PRO website](https://www.eembc.org/coremark-pro/), but ported to work using Zephyr OS.
+CoreMark®-PRO-Zephyr is a clone of official CoreMark®-PRO release which can be found at the [EEMBC CoreMark-PRO website](https://www.eembc.org/coremark-pro/), ported to Zephyr OS.
 
 Zephyr OS is the closest environment to run the CoreMark®-PRO in a threaded baremetal environment.
 
