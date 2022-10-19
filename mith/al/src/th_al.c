@@ -1010,7 +1010,23 @@ int load_sp(e_f32 *value, intparts *asint) {
 #define _cm_xstr(a) _cm_str(a)
 #define _cm_str(a) #a
 
-int argc = 5;
+enum nargv
+  {
+    NAME = 0,
+    PERF,
+#ifdef W_WORKERS_NUM
+    WORKERS,
+#endif
+#ifdef C_CONTEXT_NUM
+    CONTEXT,
+#endif
+#ifdef I_ITERATION_NU
+    ITER,
+#endif
+    LAST_ARGV
+  };
+int argc = LAST_ARGV;
+
 char *argv[] = {
 	"core.exe",
 /* Use -v0 for performance or -v1 for verification */
