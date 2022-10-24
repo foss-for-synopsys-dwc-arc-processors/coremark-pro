@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 3.20.0)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 project(zip)
 
-# TEST set(BOARD qemu_arc_em)
+# target_compile_options(app PRIVATE -DREPORT_THMALLOC_STATS=1)
+# target_compile_options(app PRIVATE -DCORE_DEBUG=1)
+# target_compile_options(app PRIVATE -DTHDEBUG=3)
+# target_compile_options(app PRIVATE -DBMDEBUG=1)
+
 target_compile_options(app PRIVATE -DUSE_TH_FILEIO=1)
 target_compile_options(app PRIVATE -DFAKE_FILEIO=1)
 target_compile_options(app PRIVATE -DNO_ALIGNED_ALLOC=1)
@@ -15,8 +19,9 @@ target_compile_options(app PRIVATE -DEE_SIZEOF_PTR=8)
 target_compile_options(app PRIVATE -DEE_PTR_ALIGN=8)
 endif()
 
-#target_compile_options(app PRIVATE -DW_WORKERS_NUM=4)
-#target_compile_options(app PRIVATE -DC_CONTEXT_NUM=4)
+target_compile_options(app PRIVATE -DW_WORKERS_NUM=1)
+target_compile_options(app PRIVATE -DC_CONTEXT_NUM=2)
+target_compile_options(app PRIVATE -DI_ITERATION_NUM=1)
 
 # Specific
 target_compile_options(app PRIVATE -DUSE_FP64=1)

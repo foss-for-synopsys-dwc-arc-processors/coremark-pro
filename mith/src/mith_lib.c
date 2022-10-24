@@ -225,7 +225,7 @@ static int RunBigEndian()
 }
 
 #define ARC_ZEPHYR_MAX_CONTEXT_NUM	12
-#define STACK_SZ			(4096)
+#define STACK_SZ			(1024 * 64)
 K_THREAD_STACK_ARRAY_DEFINE(stack_ctx, ARC_ZEPHYR_MAX_CONTEXT_NUM, STACK_SZ);
 
 /* Function: mith_main
