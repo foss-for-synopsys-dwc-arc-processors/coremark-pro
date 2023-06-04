@@ -21,6 +21,8 @@ Please refer to LICENSE.md for the specific license agreement that pertains to t
 #include "mith_sync.h"
 #include "mith_workload.h"
 
+#include <zephyr/kernel.h>
+
 e_u32 verify_output=1;
 e_u32 reporting_threshold=TH_INFO;
 
@@ -224,6 +226,10 @@ static int RunBigEndian()
      return 0;
 }
 
+#define ARC_ZEPHYR_MAX_CONTEXT_NUM	12
+#define STACK_SZ			(1024 * 64)
+K_THREAD_STACK_ARRAY_DEFINE(stack_ctx, ARC_ZEPHYR_MAX_CONTEXT_NUM, STACK_SZ);
+
 /* Function: mith_main
 	Description: 
 	main function that fires off work items. 
@@ -291,15 +297,25 @@ size_t mith_main_loop(ee_workload *workload, unsigned int num_iterations, unsign
 	}
 	th_log(TH_INFO,"Starting Run...");
 
+	if (num_contexts > ARC_ZEPHYR_MAX_CONTEXT_NUM) {
+		th_log(TH_INFO, "Too much contexts selected!");
+		return 0;
+	}
+
+	pthread_attr_t attr[ARC_ZEPHYR_MAX_CONTEXT_NUM] = {};
+
 	/* now to start the timer, and get the first item */
 	/* from here on we need to worry about thread safety */
 	al_signal_start();
 	/* create the thread pool */
-	for (i=0; i<num_contexts; i++)
-		al_thread_create(&(context[i].thread),bench_thread,(void *)(&context[i]));
+	for (i=0; i<num_contexts; i++) {
+		pthread_attr_init(&attr[i]);
+		pthread_attr_setstack(&attr[i], &stack_ctx[i][0], STACK_SZ);
+		pthread_create((pthread_t *)(&(context[i].thread)),&attr[i],bench_thread,(void *)(&context[i]));
+	}
 	/* and wait until threads are all done executing */
 	for (i=0; i<num_contexts; i++)
-		al_thread_join((context[i].thread),&context_ret);
+		pthread_join((pthread_t)(context[i].thread),&context_ret);
 	total_time=al_signal_finished();
 	/* workload is now done, report results */
 	/* from here on, only one thread operates */
