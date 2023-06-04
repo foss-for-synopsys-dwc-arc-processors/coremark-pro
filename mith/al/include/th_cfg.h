@@ -39,6 +39,10 @@ Please refer to LICENSE.md for the specific license agreement that pertains to t
 /* Target specific includes go here */
 #endif
 
+extern int argc;
+extern char *argv[];
+#define MAIN_TB int main(void)
+
 /*
  * Company, Processor and Target specific information
  *
@@ -371,7 +375,7 @@ Please refer to LICENSE.md for the specific license agreement that pertains to t
 #endif
 
 #if USE_TH_FILEIO
-#error "This version of the test harness does not have internal memory based file management"
+//#error "This version of the test harness does not have internal memory based file management"
 #endif
 
 #if !defined(FAKE_FILEIO)

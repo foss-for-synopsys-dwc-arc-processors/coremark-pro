@@ -41,7 +41,11 @@ extern int bmark_verify_loops(void *);
 extern int bmark_clean_loops(void *);
 
 /* main function to create the workload, run it, and report results */
+#ifdef __ZEPHYR__
+void main(void)
+#else
 int main(int argc, char *argv[])
+#endif
 {
 	char name[MITH_MAX_NAME];
 	char dataname_buf[MITH_MAX_NAME];

@@ -1006,4 +1006,41 @@ int load_sp(e_f32 *value, intparts *asint) {
 }
 #endif
 
+#ifdef __ZEPHYR__
+#define _cm_xstr(a) _cm_str(a)
+#define _cm_str(a) #a
+
+enum nargv
+  {
+    NAME = 0,
+    PERF,
+#ifdef W_WORKERS_NUM
+    WORKERS,
+#endif
+#ifdef C_CONTEXT_NUM
+    CONTEXT,
+#endif
+#ifdef I_ITERATION_NUM
+    ITER,
+#endif
+    LAST_ARGV
+  };
+int argc = LAST_ARGV;
+
+char *argv[] = {
+	"core.exe",
+/* Use -v0 for performance or -v1 for verification */
+	"-v0",
+#ifdef W_WORKERS_NUM
+	"-w" _cm_xstr(W_WORKERS_NUM),
+#endif
+#ifdef C_CONTEXT_NUM
+	"-c" _cm_xstr(C_CONTEXT_NUM),
+#endif
+#ifdef I_ITERATION_NUM
+	"-i" _cm_xstr(I_ITERATION_NUM)
+#endif
+};
+#endif // __ZEPHYR__
+
 #endif /* Of using floating point kernels */
