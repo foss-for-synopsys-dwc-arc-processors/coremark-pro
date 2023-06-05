@@ -11,7 +11,7 @@ project(core)
 
 
 target_compile_options(app PRIVATE -DNO_ALIGNED_ALLOC=1)
-target_compile_options(app PRIVATE -DSTUB_STAT=1)
+target_compile_options(app PRIVATE -DHAVE_SYS_STAT_H=1)
 
 if(CONFIG_64BIT)
 target_compile_options(app PRIVATE -DEE_SIZEOF_LONG=8)
@@ -20,8 +20,12 @@ target_compile_options(app PRIVATE -DEE_PTR_ALIGN=8)
 endif()
 
 target_compile_options(app PRIVATE -DW_WORKERS_NUM=1)
-target_compile_options(app PRIVATE -DC_CONTEXT_NUM=2)
-target_compile_options(app PRIVATE -DI_ITERATION_NUM=1)
+
+OPTION(CONTEXT_NUM "Number of contexts" 2)
+target_compile_options(app PRIVATE -DC_CONTEXT_NUM=${CONTEXT_NUM})
+
+OPTION(ITERATION_NUM "Number of iterations" 1)
+target_compile_options(app PRIVATE -DI_ITERATION_NUM=${ITERATION_NUM})
 
 
 # MITH headers

@@ -24,7 +24,7 @@ Please refer to LICENSE.md for the specific license agreement that pertains to t
 #if	HAVE_STAT_H
 #include <stat.h>
 #elif HAVE_SYS_STAT_H
-#include <sys/stat.h>
+//#include <sys/stat.h>
 #elif PRIVATE_STAT_H
 typedef struct stat stat;
 #elif STUB_STAT
